@@ -1,4 +1,6 @@
 import createMatcher from "./create-matcher";
+import HashHistory from "./history/hash";
+import BrowserHistory from "./history/history";
 import install from "./install";
 
 class VueRouter {
@@ -8,8 +10,33 @@ class VueRouter {
     let routes = options.routes;
 
     // 变成映射表 方便后续的匹配操作 可以匹配也可以添加一个新的路由
-
     this.matcher = createMatcher(routes);
+
+    let mode = options.mode;
+
+    if (mode === "hash") {
+      this.history = new HashHistory(this);
+    } else {
+      this.history = new BrowserHistory(this);
+    }
+  }
+
+  match(location) {
+    return this.matcher.match(location);
+  }
+
+  push(location) {
+    this.history.transitionTo(location);
+  }
+
+  init(app) {
+    console.log(app);
+    let history = this.history;
+
+    // 根据路径的变化匹配对应组件来进行渲染，路径变了，需要更新视图（响应式的）
+    history.transitionTo(history.getCurrrentLocation(), () => {
+      history.setupListener(); // 监听路由变化
+    });
   }
 }
 

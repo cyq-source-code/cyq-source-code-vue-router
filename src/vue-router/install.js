@@ -9,6 +9,8 @@ function install(_Vue) {
       if (this.$options.router) {
         this._routerRoot = this; // 根实例
         this._router = this.$options.router;
+
+        this._router.init(this); // this是整个 new Vue
       } else {
         // 在所有组件上都增加一个 _routerRoot 指向根实例
         this._routerRoot = this.$parent && this.$parent._routerRoot;
@@ -26,8 +28,18 @@ function install(_Vue) {
   console.log("install");
 
   Vue.component("router-link", {
+    props: {
+      to: { type: String, required: true },
+      tag: { type: String, default: "a" },
+    },
+    methods: {
+      handler() {
+        this.$router.push(this.to);
+      },
+    },
     render() {
-      return <a>{this.$slots.default}111</a>;
+      let tag = this.tag;
+      return <tag onClick={this.handler}>{this.$slots.default}111</tag>;
     },
   });
 
