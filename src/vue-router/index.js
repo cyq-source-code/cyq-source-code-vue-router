@@ -9,6 +9,8 @@ class VueRouter {
     console.log(options);
     let routes = options.routes;
 
+    this.beforeEachHooks = [];
+
     // 变成映射表 方便后续的匹配操作 可以匹配也可以添加一个新的路由
     this.matcher = createMatcher(routes);
 
@@ -26,9 +28,11 @@ class VueRouter {
   }
 
   push(location) {
-    this.history.transitionTo(location, () => {
-      window.location.hash = location;
-    });
+    return this.history.push(location);
+  }
+
+  beforeEach(cb) {
+    this.beforeEachHooks.push(cb);
   }
 
   init(app) {

@@ -12,6 +12,15 @@ function createRoute(record, location) {
   };
 }
 
+function runQueue(queue, from, to, cb) {
+  function next(index) {
+    if (index >= queue.length) return cb();
+    let hook = queue[index];
+    hook(from, to, () => next(index + 1));
+  }
+  next(0);
+}
+
 class Base {
   constructor(router) {
     this.router = router;
@@ -34,12 +43,16 @@ class Base {
       return;
     }
 
-    this.current = route;
-    console.log(this.current);
+    let queue = [].concat(this.router.beforeEachHooks);
 
-    // 当路由切换时，再调用transitionTo
-    listener && listener();
-    this.cb && this.cb(route);
+    runQueue(queue, this.current, route, () => {
+      this.current = route;
+      console.log(this.current);
+
+      // 当路由切换时，再调用transitionTo
+      listener && listener();
+      this.cb && this.cb(route);
+    });
   }
 
   //this._route = newRoute

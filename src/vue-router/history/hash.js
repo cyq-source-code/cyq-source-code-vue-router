@@ -30,6 +30,11 @@ class HashHistory extends Base {
   getCurrrentLocation() {
     return getHash();
   }
+  push(location) {
+    this.transitionTo(location, () => {
+      window.location.hash = location;
+    });
+  }
 }
 
 export default HashHistory;
