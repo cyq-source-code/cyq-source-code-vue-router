@@ -26,16 +26,23 @@ class VueRouter {
   }
 
   push(location) {
-    this.history.transitionTo(location);
+    this.history.transitionTo(location, () => {
+      window.location.hash = location;
+    });
   }
 
   init(app) {
-    console.log(app);
+    // console.log(app);
     let history = this.history;
 
     // 根据路径的变化匹配对应组件来进行渲染，路径变了，需要更新视图（响应式的）
     history.transitionTo(history.getCurrrentLocation(), () => {
       history.setupListener(); // 监听路由变化
+    });
+
+    // 更新_route，数据变化自动渲染视图
+    history.listen((newRoute) => {
+      app._route = newRoute;
     });
   }
 }

@@ -21,8 +21,9 @@ class HashHistory extends Base {
   //稍后需要调用此方法，监控hash值的变化
   setupListener() {
     window.addEventListener("hashchange", () => {
-      let hash = getHash();
-      console.log(hash);
+      // let hash = getHash();
+      // console.log(hash);
+      this.transitionTo(getHash());
     });
   }
 

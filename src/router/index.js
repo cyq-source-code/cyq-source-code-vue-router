@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import Vue from "vue";
 // import VueRouter from "vue-router";
 import VueRouter from "@/vue-router";
@@ -14,13 +15,13 @@ const routes = [
       {
         path: "a",
         component: {
-          render: () => <h1>home a</h1>,
+          render: (h) => <h1>home a</h1>,
         },
       },
       {
         path: "b",
         component: {
-          render: () => <h1>home b</h1>,
+          render: (h) => <h1>home b</h1>,
         },
       },
     ],
@@ -37,13 +38,13 @@ const routes = [
       {
         path: "a",
         component: {
-          render: () => <h1>about a</h1>,
+          render: (h) => <h1>about a</h1>,
         },
       },
       {
         path: "b",
         component: {
-          render: () => <h1>about b</h1>,
+          render: (h) => <h1>about b</h1>,
         },
       },
     ],
